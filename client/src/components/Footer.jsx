@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <footer>
+    <footer className="footer">
       <p>Gallery of Wonders footer placeholder.</p>
     </footer>
   )

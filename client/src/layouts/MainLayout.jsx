@@ -6,7 +6,7 @@ function MainLayout() {
   return (
     <>
       <Navbar />
-      <main>
+      <main className="app-main">
         <Outlet />
       </main>
       <Footer />
