@@ -17,3 +17,51 @@ nav a.active {
   font-weight: 700;
   text-decoration: underline;
 }
+
+.gallery-page {
+  padding: 24px;
+}
+
+.artwork-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.artwork-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.artwork-card__image {
+  aspect-ratio: 4 / 3;
+  display: block;
+  object-fit: cover;
+  width: 100%;
+}
+
+.artwork-card__content {
+  padding: 16px;
+}
+
+.artwork-card__category {
+  color: #4f46e5;
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.artwork-card h2 {
+  margin: 0 0 8px;
+}
+
+.artwork-card p {
+  margin: 0 0 16px;
+}
+
+.artwork-card button {
+  cursor: pointer;
+  padding: 8px 12px;
+}
