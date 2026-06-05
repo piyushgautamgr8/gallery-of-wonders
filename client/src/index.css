@@ -65,3 +65,56 @@ nav a.active {
   cursor: pointer;
   padding: 8px 12px;
 }
+
+.artwork-details {
+  padding: 24px;
+}
+
+.artwork-details__layout {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  margin-top: 24px;
+}
+
+.artwork-details__image {
+  border-radius: 8px;
+  max-height: 640px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.artwork-details__content {
+  align-self: center;
+}
+
+.artwork-details__category {
+  color: #4f46e5;
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.artwork-details__content h1 {
+  margin: 0 0 16px;
+}
+
+.artwork-details__content p {
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+
+.artwork-details button {
+  cursor: pointer;
+  padding: 8px 12px;
+}
+
+.artwork-details--empty {
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .artwork-details__layout {
+    grid-template-columns: 1fr;
+  }
+}

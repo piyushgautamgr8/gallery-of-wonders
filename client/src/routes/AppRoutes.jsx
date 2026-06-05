@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ProtectedRoute from '../components/ProtectedRoute'
 import MainLayout from '../layouts/MainLayout'
+import ArtworkDetails from '../pages/ArtworkDetails'
 import Gallery from '../pages/Gallery'
 import Home from '../pages/Home'
 import Login from '../pages/Login'
@@ -21,6 +22,14 @@ function AppRoutes() {
             element={
               <ProtectedRoute>
                 <Gallery />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/gallery/:id"
+            element={
+              <ProtectedRoute>
+                <ArtworkDetails />
               </ProtectedRoute>
             }
           />
