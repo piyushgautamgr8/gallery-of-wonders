@@ -1,9 +1,87 @@
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import ArtworkCard from '../components/ArtworkCard'
+import artworkService from '../services/artworkService'
+
+const aboutItems = [
+  {
+    title: 'Discover Art',
+    description: 'Browse a curated collection of celebrated works from different eras and movements.',
+  },
+  {
+    title: 'Learn History',
+    description: 'Understand the artists, cultural moments, and stories behind each masterpiece.',
+  },
+  {
+    title: 'Explore Creativity',
+    description: 'Find inspiration in the techniques, ideas, and visual language that shaped art.',
+  },
+]
+
 function Home() {
+  const [featuredArtworks, setFeaturedArtworks] = useState([])
+
+  useEffect(() => {
+    artworkService.getAllArtworks().then((artworks) => {
+      setFeaturedArtworks(artworks.slice(0, 3))
+    })
+  }, [])
+
   return (
-    <section>
-      <h1>Home</h1>
-      <p>Welcome to Gallery of Wonders.</p>
-    </section>
+    <div className="home-page">
+      <section className="home-hero">
+        <div className="home-hero__content">
+          <p className="home-hero__eyebrow">Gallery of Wonders</p>
+          <h1>Discover the World's Greatest Artworks</h1>
+          <p className="home-hero__description">
+            Step into a curated digital gallery where timeless masterpieces, rich histories, and
+            creative inspiration come together in one elegant experience.
+          </p>
+          <div className="home-hero__actions">
+            <Link className="home-button home-button--primary" to="/gallery">
+              Explore Gallery
+            </Link>
+            <Link className="home-button home-button--secondary" to="/register">
+              Join Community
+            </Link>
+          </div>
+        </div>
+        <div className="home-hero__panel" aria-label="Curated artwork highlights">
+          <img
+            src="https://images.unsplash.com/photo-1545987796-200677ee1011"
+            alt="Visitors viewing framed artworks in a gallery"
+            className="home-hero__image"
+          />
+        </div>
+      </section>
+
+      <section className="home-section" aria-labelledby="featured-artworks-heading">
+        <div className="home-section__header">
+          <p className="home-section__eyebrow">Featured Artworks</p>
+          <h2 id="featured-artworks-heading">Start with these iconic pieces</h2>
+        </div>
+        <div className="artwork-grid">
+          {featuredArtworks.map((artwork) => (
+            <ArtworkCard key={artwork.id} artwork={artwork} />
+          ))}
+        </div>
+      </section>
+
+      <section className="home-section" aria-labelledby="about-gallery-heading">
+        <div className="home-section__header">
+          <p className="home-section__eyebrow">About</p>
+          <h2 id="about-gallery-heading">A thoughtful way to experience art</h2>
+        </div>
+        <div className="home-about-grid">
+          {aboutItems.map((item) => (
+            <article className="home-about-card" key={item.title}>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
   )
 }
 
