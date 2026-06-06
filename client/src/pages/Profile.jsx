@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import EmptyState from '../components/EmptyState'
 import useAuth from '../hooks/useAuth'
 
 function Profile() {
@@ -13,11 +14,12 @@ function Profile() {
   if (!user) {
     return (
       <section className="profile-page profile-page--empty">
-        <h1>Profile unavailable</h1>
-        <p>We could not load your profile information right now.</p>
-        <button type="button" onClick={handleLogout}>
-          Return Home
-        </button>
+        <EmptyState
+          title="Profile unavailable"
+          description="We could not load your profile information right now."
+          buttonText="Return Home"
+          navigationLink="/"
+        />
       </section>
     )
   }

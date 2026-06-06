@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import ArtworkCard from '../components/ArtworkCard'
+import EmptyState from '../components/EmptyState'
+import Loader from '../components/Loader'
 import { getAllArtworks } from '../services/artworkService'
 
 function Gallery() {
@@ -24,7 +26,7 @@ function Gallery() {
     return (
       <section className="gallery-page">
         <h1>Gallery</h1>
-        <p>Loading artworks...</p>
+        <Loader message="Loading artworks..." />
       </section>
     )
   }
@@ -32,8 +34,7 @@ function Gallery() {
   if (error) {
     return (
       <section className="gallery-page">
-        <h1>Gallery</h1>
-        <p>{error}</p>
+        <EmptyState title="Gallery unavailable" description={error} />
       </section>
     )
   }

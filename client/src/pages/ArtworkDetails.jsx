@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import EmptyState from '../components/EmptyState'
+import Loader from '../components/Loader'
 import { getArtworkById } from '../services/artworkService'
 
 function ArtworkDetails() {
@@ -48,8 +50,7 @@ function ArtworkDetails() {
   if (isLoading) {
     return (
       <section className="artwork-details artwork-details--empty">
-        <h1>Loading artwork...</h1>
-        <p>Please wait while we load the artwork details.</p>
+        <Loader message="Loading artwork..." />
       </section>
     )
   }
@@ -57,11 +58,12 @@ function ArtworkDetails() {
   if (error) {
     return (
       <section className="artwork-details artwork-details--empty">
-        <h1>Artwork details unavailable</h1>
-        <p>{error}</p>
-        <button type="button" onClick={handleBackToGallery}>
-          Back to Gallery
-        </button>
+        <EmptyState
+          title="Artwork details unavailable"
+          description={error}
+          buttonText="Back to Gallery"
+          navigationLink="/gallery"
+        />
       </section>
     )
   }
@@ -69,11 +71,12 @@ function ArtworkDetails() {
   if (!artwork) {
     return (
       <section className="artwork-details artwork-details--empty">
-        <h1>Artwork not found</h1>
-        <p>We could not find that artwork in the gallery.</p>
-        <button type="button" onClick={handleBackToGallery}>
-          Back to Gallery
-        </button>
+        <EmptyState
+          title="Artwork not found"
+          description="We could not find that artwork in the gallery."
+          buttonText="Back to Gallery"
+          navigationLink="/gallery"
+        />
       </section>
     )
   }
