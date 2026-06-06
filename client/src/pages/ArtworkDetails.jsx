@@ -1,13 +1,69 @@
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import artworks from '../utils/mockArtworks'
+import { getArtworkById } from '../services/artworkService'
 
 function ArtworkDetails() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const artwork = artworks.find((item) => item.id === id)
+  const [artwork, setArtwork] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    let isCurrent = true
+
+    getArtworkById(id)
+      .then((artworkDetails) => {
+        if (!isCurrent) {
+          return
+        }
+
+        setArtwork(artworkDetails)
+        setError('')
+      })
+      .catch(() => {
+        if (!isCurrent) {
+          return
+        }
+
+        setError('Unable to load artwork details. Please try again later.')
+      })
+      .finally(() => {
+        if (!isCurrent) {
+          return
+        }
+
+        setIsLoading(false)
+      })
+
+    return () => {
+      isCurrent = false
+    }
+  }, [id])
 
   function handleBackToGallery() {
     navigate('/gallery')
+  }
+
+  if (isLoading) {
+    return (
+      <section className="artwork-details artwork-details--empty">
+        <h1>Loading artwork...</h1>
+        <p>Please wait while we load the artwork details.</p>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section className="artwork-details artwork-details--empty">
+        <h1>Artwork details unavailable</h1>
+        <p>{error}</p>
+        <button type="button" onClick={handleBackToGallery}>
+          Back to Gallery
+        </button>
+      </section>
+    )
   }
 
   if (!artwork) {
