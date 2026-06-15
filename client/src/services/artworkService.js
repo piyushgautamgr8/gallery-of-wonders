@@ -1,15 +1,13 @@
-import artworks from '../utils/mockArtworks'
+import api from './api'
 
-export function getAllArtworks() {
-  // TODO: Replace this mock response with api.get('/artworks') when the backend is ready.
-  return Promise.resolve([...artworks])
+export async function getAllArtworks(params = {}) {
+  const response = await api.get('/artworks', { params })
+  return response.data.artworks
 }
 
-export function getArtworkById(id) {
-  // TODO: Replace this mock response with api.get(`/artworks/${id}`) when the backend is ready.
-  const artwork = artworks.find((item) => item.id === String(id))
-
-  return Promise.resolve(artwork || null)
+export async function getArtworkById(id) {
+  const response = await api.get(`/artworks/${id}`)
+  return response.data.artwork
 }
 
 export default {

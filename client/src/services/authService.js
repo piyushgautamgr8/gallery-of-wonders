@@ -1,43 +1,22 @@
-const mockUser = {
-  id: '1',
-  username: 'Piyush',
-  email: 'piyush@example.com',
+import api from './api'
+
+export async function registerUser(userData) {
+  const response = await api.post('/auth/register', userData)
+  return response.data
 }
 
-const mockAuthToken = 'mock-auth-token'
-
-export function registerUser(userData) {
-  // TODO: Replace this mock response with api.post('/auth/register', userData) when the backend is ready.
-  return Promise.resolve({
-    user: {
-      ...mockUser,
-      username: userData?.username || mockUser.username,
-      email: userData?.email || mockUser.email,
-    },
-    token: mockAuthToken,
-  })
+export async function loginUser(credentials) {
+  const response = await api.post('/auth/login', credentials)
+  return response.data
 }
 
-export function loginUser(credentials) {
-  // TODO: Replace this mock response with api.post('/auth/login', credentials) when the backend is ready.
-  return Promise.resolve({
-    user: {
-      ...mockUser,
-      email: credentials?.email || mockUser.email,
-    },
-    token: mockAuthToken,
-  })
-}
-
-export function logoutUser() {
-  // TODO: Replace this mock response with api.post('/auth/logout') when the backend supports sessions.
-  return Promise.resolve({
-    success: true,
-  })
+export async function getProfile() {
+  const response = await api.get('/auth/profile')
+  return response.data.user
 }
 
 export default {
   registerUser,
   loginUser,
-  logoutUser,
+  getProfile,
 }

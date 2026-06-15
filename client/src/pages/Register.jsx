@@ -5,7 +5,7 @@ import useAuth from '../hooks/useAuth'
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 function Register() {
-  const { login, mockUser } = useAuth()
+  const { register } = useAuth()
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     username: '',
@@ -14,6 +14,7 @@ function Register() {
     confirmPassword: '',
   })
   const [errors, setErrors] = useState({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -56,7 +57,7 @@ function Register() {
     return nextErrors
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
 
     const validationErrors = validateForm()
@@ -66,15 +67,22 @@ function Register() {
       return
     }
 
-    login(
-      {
-        ...mockUser,
+    setIsSubmitting(true)
+
+    try {
+      await register({
         username: formData.username.trim(),
         email: formData.email.trim(),
-      },
-      'mock-auth-token',
-    )
-    navigate('/gallery')
+        password: formData.password,
+      })
+      navigate('/gallery')
+    } catch (error) {
+      setErrors({
+        form: error.response?.data?.message || 'Unable to register. Please try again.',
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -85,6 +93,8 @@ function Register() {
         <p className="auth-card__intro">Create your account to start exploring the collection.</p>
 
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
+          {errors.form ? <p className="auth-form__error">{errors.form}</p> : null}
+
           <div className="auth-form__field">
             <label htmlFor="username">Username</label>
             <input
@@ -153,7 +163,9 @@ function Register() {
             ) : null}
           </div>
 
-          <button type="submit">Register</button>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Registering...' : 'Register'}
+          </button>
         </form>
 
         <p className="auth-card__footer">

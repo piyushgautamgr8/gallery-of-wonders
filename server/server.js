@@ -3,6 +3,8 @@ const cors = require("cors");
 require("dotenv").config();
 
 const connectDB = require("./config/db");
+const authRoutes = require("./routes/authRoutes");
+const artworkRoutes = require("./routes/artworkRoutes");
 
 const app = express();
 
@@ -12,6 +14,9 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Gallery of Wonders API");
 });
+
+app.use("/api/auth", authRoutes);
+app.use("/api/artworks", artworkRoutes);
 
 const PORT = process.env.PORT || 5000;
 
