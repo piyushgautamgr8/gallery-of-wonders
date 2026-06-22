@@ -2,12 +2,15 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ProtectedRoute from '../components/ProtectedRoute'
 import MainLayout from '../layouts/MainLayout'
 import ArtworkDetails from '../pages/ArtworkDetails'
+import Collections from '../pages/Collections'
+import Dashboard from '../pages/Dashboard'
 import Gallery from '../pages/Gallery'
 import Home from '../pages/Home'
 import Login from '../pages/Login'
 import NotFound from '../pages/NotFound'
 import Profile from '../pages/Profile'
 import Register from '../pages/Register'
+import UploadArtwork from '../pages/UploadArtwork'
 
 function AppRoutes() {
   return (
@@ -38,6 +41,30 @@ function AppRoutes() {
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/upload"
+            element={
+              <ProtectedRoute>
+                <UploadArtwork />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/collections"
+            element={
+              <ProtectedRoute>
+                <Collections />
               </ProtectedRoute>
             }
           />
