@@ -1,7 +1,10 @@
 function Footer() {
   return (
     <footer className="footer">
-      <p>Gallery of Wonders footer placeholder.</p>
+      <div>
+        <strong>Gallery of Wonders</strong>
+        <p>Premium digital curation for artists, collectors, and quiet discovery.</p>
+      </div>
     </footer>
   )
 }

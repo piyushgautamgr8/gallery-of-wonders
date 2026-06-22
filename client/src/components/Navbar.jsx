@@ -4,8 +4,9 @@ import useAuth from '../hooks/useAuth'
 const getNavLinkClassName = ({ isActive }) => (isActive ? 'active' : undefined)
 
 function Navbar() {
-  const { isAuthenticated, logout } = useAuth()
+  const { isAuthenticated, logout, user } = useAuth()
   const navigate = useNavigate()
+  const avatarInitial = (user?.username || user?.email || 'G').charAt(0).toUpperCase()
 
   function handleLogout() {
     logout()
@@ -32,8 +33,32 @@ function Navbar() {
                 </NavLink>
               </li>
               <li>
+                <NavLink to="/dashboard" className={getNavLinkClassName}>
+                  Dashboard
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/upload" className={getNavLinkClassName}>
+                  Upload
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/collections" className={getNavLinkClassName}>
+                  Collections
+                </NavLink>
+              </li>
+              <li>
                 <NavLink to="/profile" className={getNavLinkClassName}>
-                  Profile
+                  <span className="navbar__profile-link">
+                    {user?.profileImage ? (
+                      <img src={user.profileImage} alt="" className="navbar__avatar" />
+                    ) : (
+                      <span className="navbar__avatar navbar__avatar--fallback" aria-hidden="true">
+                        {avatarInitial}
+                      </span>
+                    )}
+                    Profile
+                  </span>
                 </NavLink>
               </li>
               <li>
