@@ -64,56 +64,63 @@ function Login() {
 
   return (
     <section className="auth-page">
-      <div className="auth-card">
-        <p className="auth-card__eyebrow">Welcome back</p>
-        <h1>Login</h1>
-        <p className="auth-card__intro">Sign in to continue exploring the gallery.</p>
+      <div className="auth-shell">
+        <aside className="auth-art-panel">
+          <p>Gallery of Wonders</p>
+          <h1>Enter a quieter digital museum.</h1>
+          <span>Curate, collect, and return to artworks that stay with you.</span>
+        </aside>
+        <div className="auth-card">
+          <p className="auth-card__eyebrow">Welcome back</p>
+          <h1>Login</h1>
+          <p className="auth-card__intro">Sign in to continue exploring the gallery.</p>
 
-        <form className="auth-form" onSubmit={handleSubmit} noValidate>
-          {errors.form ? <p className="auth-form__error">{errors.form}</p> : null}
+          <form className="auth-form" onSubmit={handleSubmit} noValidate>
+            {errors.form ? <p className="auth-form__error">{errors.form}</p> : null}
 
-          <div className="auth-form__field">
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              aria-describedby={errors.email ? 'email-error' : undefined}
-            />
-            {errors.email ? (
-              <p className="auth-form__error" id="email-error">
-                {errors.email}
-              </p>
-            ) : null}
-          </div>
+            <div className="auth-form__field">
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                aria-describedby={errors.email ? 'email-error' : undefined}
+              />
+              {errors.email ? (
+                <p className="auth-form__error" id="email-error">
+                  {errors.email}
+                </p>
+              ) : null}
+            </div>
 
-          <div className="auth-form__field">
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              aria-describedby={errors.password ? 'password-error' : undefined}
-            />
-            {errors.password ? (
-              <p className="auth-form__error" id="password-error">
-                {errors.password}
-              </p>
-            ) : null}
-          </div>
+            <div className="auth-form__field">
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                aria-describedby={errors.password ? 'password-error' : undefined}
+              />
+              {errors.password ? (
+                <p className="auth-form__error" id="password-error">
+                  {errors.password}
+                </p>
+              ) : null}
+            </div>
 
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
+            <button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Logging in...' : 'Login'}
+            </button>
+          </form>
 
-        <p className="auth-card__footer">
-          New to Gallery of Wonders? <Link to="/register">Create an account</Link>
-        </p>
+          <p className="auth-card__footer">
+            Don&apos;t have an account? <Link to="/register">Register</Link>
+          </p>
+        </div>
       </div>
     </section>
   )

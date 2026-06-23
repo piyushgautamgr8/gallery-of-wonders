@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AUTH_TOKEN_KEY } from '../services/api'
-import { getProfile, loginUser, registerUser } from '../services/authService'
+import { getProfile, loginUser, registerUser, updateProfile as saveProfile } from '../services/authService'
 import { AuthContext } from './authContext'
 
 const AUTH_USER_KEY = 'galleryOfWondersUser'
@@ -40,7 +40,6 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     if (!token) {
-      setIsAuthLoading(false)
       return undefined
     }
 
@@ -85,25 +84,31 @@ export function AuthProvider({ children }) {
     return data
   }
 
+  async function updateProfile(profileData) {
+    const updatedUser = await saveProfile(profileData)
+    setUser(updatedUser)
+    localStorage.setItem(AUTH_USER_KEY, JSON.stringify(updatedUser))
+    return updatedUser
+  }
+
   function logout() {
     setUser(null)
     setToken(null)
+    setIsAuthLoading(false)
     localStorage.removeItem(AUTH_USER_KEY)
     localStorage.removeItem(AUTH_TOKEN_KEY)
   }
 
-  const value = useMemo(
-    () => ({
-      user,
-      token,
-      isAuthenticated,
-      isAuthLoading,
-      login,
-      register,
-      logout,
-    }),
-    [user, token, isAuthenticated, isAuthLoading],
-  )
+  const value = {
+    user,
+    token,
+    isAuthenticated,
+    isAuthLoading,
+    login,
+    register,
+    updateProfile,
+    logout,
+  }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

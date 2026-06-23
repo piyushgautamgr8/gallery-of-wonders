@@ -15,8 +15,14 @@ export async function getProfile() {
   return response.data.user
 }
 
+export async function updateProfile(profileData) {
+  const response = await api.put('/users/profile', profileData)
+  return response.data.user
+}
+
 export default {
   registerUser,
   loginUser,
   getProfile,
+  updateProfile,
 }

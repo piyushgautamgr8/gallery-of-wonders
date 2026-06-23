@@ -87,90 +87,97 @@ function Register() {
 
   return (
     <section className="auth-page">
-      <div className="auth-card">
-        <p className="auth-card__eyebrow">Join the gallery</p>
-        <h1>Register</h1>
-        <p className="auth-card__intro">Create your account to start exploring the collection.</p>
+      <div className="auth-shell">
+        <aside className="auth-art-panel">
+          <p>Gallery of Wonders</p>
+          <h1>Build your private wall of inspiration.</h1>
+          <span>Save favorite works, publish your own, and shape collections with intent.</span>
+        </aside>
+        <div className="auth-card">
+          <p className="auth-card__eyebrow">Join the gallery</p>
+          <h1>Register</h1>
+          <p className="auth-card__intro">Create your account to start exploring the collection.</p>
 
-        <form className="auth-form" onSubmit={handleSubmit} noValidate>
-          {errors.form ? <p className="auth-form__error">{errors.form}</p> : null}
+          <form className="auth-form" onSubmit={handleSubmit} noValidate>
+            {errors.form ? <p className="auth-form__error">{errors.form}</p> : null}
 
-          <div className="auth-form__field">
-            <label htmlFor="username">Username</label>
-            <input
-              id="username"
-              name="username"
-              type="text"
-              value={formData.username}
-              onChange={handleChange}
-              aria-describedby={errors.username ? 'username-error' : undefined}
-            />
-            {errors.username ? (
-              <p className="auth-form__error" id="username-error">
-                {errors.username}
-              </p>
-            ) : null}
-          </div>
+            <div className="auth-form__field">
+              <label htmlFor="username">Username</label>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                value={formData.username}
+                onChange={handleChange}
+                aria-describedby={errors.username ? 'username-error' : undefined}
+              />
+              {errors.username ? (
+                <p className="auth-form__error" id="username-error">
+                  {errors.username}
+                </p>
+              ) : null}
+            </div>
 
-          <div className="auth-form__field">
-            <label htmlFor="register-email">Email</label>
-            <input
-              id="register-email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              aria-describedby={errors.email ? 'register-email-error' : undefined}
-            />
-            {errors.email ? (
-              <p className="auth-form__error" id="register-email-error">
-                {errors.email}
-              </p>
-            ) : null}
-          </div>
+            <div className="auth-form__field">
+              <label htmlFor="register-email">Email</label>
+              <input
+                id="register-email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                aria-describedby={errors.email ? 'register-email-error' : undefined}
+              />
+              {errors.email ? (
+                <p className="auth-form__error" id="register-email-error">
+                  {errors.email}
+                </p>
+              ) : null}
+            </div>
 
-          <div className="auth-form__field">
-            <label htmlFor="register-password">Password</label>
-            <input
-              id="register-password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              aria-describedby={errors.password ? 'register-password-error' : undefined}
-            />
-            {errors.password ? (
-              <p className="auth-form__error" id="register-password-error">
-                {errors.password}
-              </p>
-            ) : null}
-          </div>
+            <div className="auth-form__field">
+              <label htmlFor="register-password">Password</label>
+              <input
+                id="register-password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                aria-describedby={errors.password ? 'register-password-error' : undefined}
+              />
+              {errors.password ? (
+                <p className="auth-form__error" id="register-password-error">
+                  {errors.password}
+                </p>
+              ) : null}
+            </div>
 
-          <div className="auth-form__field">
-            <label htmlFor="confirm-password">Confirm Password</label>
-            <input
-              id="confirm-password"
-              name="confirmPassword"
-              type="password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              aria-describedby={errors.confirmPassword ? 'confirm-password-error' : undefined}
-            />
-            {errors.confirmPassword ? (
-              <p className="auth-form__error" id="confirm-password-error">
-                {errors.confirmPassword}
-              </p>
-            ) : null}
-          </div>
+            <div className="auth-form__field">
+              <label htmlFor="confirm-password">Confirm Password</label>
+              <input
+                id="confirm-password"
+                name="confirmPassword"
+                type="password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                aria-describedby={errors.confirmPassword ? 'confirm-password-error' : undefined}
+              />
+              {errors.confirmPassword ? (
+                <p className="auth-form__error" id="confirm-password-error">
+                  {errors.confirmPassword}
+                </p>
+              ) : null}
+            </div>
 
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Registering...' : 'Register'}
-          </button>
-        </form>
+            <button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Registering...' : 'Register'}
+            </button>
+          </form>
 
-        <p className="auth-card__footer">
-          Already have an account? <Link to="/login">Login</Link>
-        </p>
+          <p className="auth-card__footer">
+            Already have an account? <Link to="/login">Login</Link>
+          </p>
+        </div>
       </div>
     </section>
   )

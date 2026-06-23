@@ -18,13 +18,26 @@ const aboutItems = [
   },
 ]
 
+const categories = ['Digital Art', 'Photography', 'Illustration', 'Painting', 'Sculpture', 'Poetry']
+
+const stats = [
+  { label: 'Curated rooms', value: '12+' },
+  { label: 'Creative categories', value: '24' },
+  { label: 'Member collections', value: '1k+' },
+]
+
 function Home() {
   const [featuredArtworks, setFeaturedArtworks] = useState([])
 
   useEffect(() => {
-    artworkService.getAllArtworks().then((artworks) => {
-      setFeaturedArtworks(artworks.slice(0, 3))
-    })
+    artworkService
+      .getAllArtworks({ limit: 3 })
+      .then((artworks) => {
+        setFeaturedArtworks(artworks.slice(0, 3))
+      })
+      .catch(() => {
+        setFeaturedArtworks([])
+      })
   }, [])
 
   return (
@@ -45,6 +58,14 @@ function Home() {
               Join Community
             </Link>
           </div>
+          <div className="home-hero__stats">
+            {stats.map((stat) => (
+              <span key={stat.label}>
+                <strong>{stat.value}</strong>
+                {stat.label}
+              </span>
+            ))}
+          </div>
         </div>
         <div className="home-hero__panel" aria-label="Curated artwork highlights">
           <img
@@ -52,6 +73,21 @@ function Home() {
             alt="Visitors viewing framed artworks in a gallery"
             className="home-hero__image"
           />
+        </div>
+      </section>
+
+      <section className="home-section" aria-labelledby="categories-heading">
+        <div className="home-section__header">
+          <p className="home-section__eyebrow">Browse by mood</p>
+          <h2 id="categories-heading">Category rooms made for focused discovery</h2>
+        </div>
+        <div className="category-grid">
+          {categories.map((category) => (
+            <Link className="category-card" key={category} to="/gallery">
+              <span>{category}</span>
+              <small>Explore collection</small>
+            </Link>
+          ))}
         </div>
       </section>
 
@@ -80,6 +116,14 @@ function Home() {
             </article>
           ))}
         </div>
+      </section>
+
+      <section className="home-cta" aria-labelledby="home-cta-heading">
+        <p className="home-section__eyebrow">Begin your collection</p>
+        <h2 id="home-cta-heading">Build a gallery that feels personal, intentional, and alive.</h2>
+        <Link className="home-button home-button--primary" to="/upload">
+          Upload Artwork
+        </Link>
       </section>
     </div>
   )
