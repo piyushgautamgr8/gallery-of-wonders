@@ -4,15 +4,17 @@ const connectDB = async () => {
   const mongoUri = process.env.MONGO_URI;
 
   if (!mongoUri) {
-    throw new Error("MONGO_URI is missing from environment variables");
+    console.warn("MONGO_URI is missing. Server started without a database connection.");
+    return null;
   }
 
   try {
     const conn = await mongoose.connect(mongoUri);
     console.log(`MongoDB Connected: ${conn.connection.host}`);
+    return conn;
   } catch (error) {
-    console.error(`MongoDB connection error: ${error.message}`);
-    throw error;
+    console.warn(`MongoDB connection skipped: ${error.message}`);
+    return null;
   }
 };
 

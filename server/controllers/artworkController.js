@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Artwork = require("../models/Artwork");
+const User = require("../models/User");
 
 const formatArtwork = (artwork) => {
   const owner = artwork.owner || {};
@@ -12,6 +13,10 @@ const formatArtwork = (artwork) => {
     image: artwork.image,
     description: artwork.description,
     tags: artwork.tags,
+    likes: artwork.likes || [],
+    bookmarks: artwork.bookmarks || [],
+    likeCount: artwork.likes?.length || 0,
+    bookmarkCount: artwork.bookmarks?.length || 0,
     owner: owner._id || owner,
     createdAt: artwork.createdAt,
     updatedAt: artwork.updatedAt,
@@ -92,6 +97,35 @@ const getArtworkById = async (req, res) => {
     return res.status(200).json({ artwork: formatArtwork(artwork) });
   } catch (error) {
     return res.status(500).json({ message: "Failed to fetch artwork", error: error.message });
+  }
+};
+
+const getRelatedArtworks = async (req, res) => {
+  try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(404).json({ message: "Artwork not found" });
+    }
+
+    const artwork = await Artwork.findById(req.params.id);
+
+    if (!artwork) {
+      return res.status(404).json({ message: "Artwork not found" });
+    }
+
+    const relatedArtworks = await Artwork.find({
+      _id: { $ne: artwork._id },
+      $or: [
+        { category: artwork.category },
+        { tags: { $in: artwork.tags || [] } },
+      ],
+    })
+      .populate("owner", "username")
+      .sort({ createdAt: -1 })
+      .limit(6);
+
+    return res.status(200).json({ artworks: relatedArtworks.map(formatArtwork) });
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to fetch related artworks", error: error.message });
   }
 };
 
@@ -183,10 +217,81 @@ const deleteArtwork = async (req, res) => {
   }
 };
 
+const toggleLikeArtwork = async (req, res) => {
+  try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(404).json({ message: "Artwork not found" });
+    }
+
+    const artwork = await Artwork.findById(req.params.id);
+
+    if (!artwork) {
+      return res.status(404).json({ message: "Artwork not found" });
+    }
+
+    const hasLiked = artwork.likes.some((userId) => userId.equals(req.user._id));
+
+    artwork.likes = hasLiked
+      ? artwork.likes.filter((userId) => !userId.equals(req.user._id))
+      : [...artwork.likes, req.user._id];
+
+    await artwork.save();
+    await artwork.populate("owner", "username");
+
+    return res.status(200).json({
+      message: hasLiked ? "Artwork unliked" : "Artwork liked",
+      artwork: formatArtwork(artwork),
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to update like", error: error.message });
+  }
+};
+
+const toggleBookmarkArtwork = async (req, res) => {
+  try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(404).json({ message: "Artwork not found" });
+    }
+
+    const artwork = await Artwork.findById(req.params.id);
+    const user = await User.findById(req.user._id);
+
+    if (!artwork) {
+      return res.status(404).json({ message: "Artwork not found" });
+    }
+
+    const hasBookmarked = artwork.bookmarks.some((userId) => userId.equals(req.user._id));
+
+    artwork.bookmarks = hasBookmarked
+      ? artwork.bookmarks.filter((userId) => !userId.equals(req.user._id))
+      : [...artwork.bookmarks, req.user._id];
+
+    if (user) {
+      user.bookmarks = hasBookmarked
+        ? user.bookmarks.filter((artworkId) => !artworkId.equals(artwork._id))
+        : [...user.bookmarks, artwork._id];
+      await user.save();
+    }
+
+    await artwork.save();
+    await artwork.populate("owner", "username");
+
+    return res.status(200).json({
+      message: hasBookmarked ? "Artwork removed from bookmarks" : "Artwork bookmarked",
+      artwork: formatArtwork(artwork),
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to update bookmark", error: error.message });
+  }
+};
+
 module.exports = {
   getArtworks,
   getArtworkById,
+  getRelatedArtworks,
   createArtwork,
   updateArtwork,
   deleteArtwork,
+  toggleLikeArtwork,
+  toggleBookmarkArtwork,
 };
