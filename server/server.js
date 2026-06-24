@@ -15,10 +15,29 @@ const { requestLogger } = require("./middleware/loggerMiddleware");
 const { securityHeaders } = require("./middleware/securityMiddleware");
 
 const app = express();
+const normalizeOrigin = (origin) => origin?.replace(/\/+$/, "");
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+].filter(Boolean).map(normalizeOrigin);
+const vercelOriginPattern = /^https:\/\/[a-z0-9-]+\.vercel\.app$/i;
+
+const corsOptions = {
+  origin(origin, callback) {
+    const normalizedOrigin = normalizeOrigin(origin);
+
+    if (!origin || allowedOrigins.includes(normalizedOrigin) || vercelOriginPattern.test(normalizedOrigin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Not allowed by CORS"));
+  },
+};
 
 app.use(securityHeaders);
 app.use(requestLogger);
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
@@ -33,7 +52,7 @@ app.get("/api/health", (req, res) => {
   res.status(200).json({
     success: true,
     status: "ok",
-    database: process.env.MONGO_URI ? "configured" : "missing",
+    database: process.env.MONGODB_URI || process.env.MONGO_URI ? "configured" : "missing",
     cloudinary:
       process.env.CLOUDINARY_CLOUD_NAME &&
       process.env.CLOUDINARY_API_KEY &&

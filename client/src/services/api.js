@@ -2,8 +2,20 @@ import axios from 'axios'
 
 export const AUTH_TOKEN_KEY = 'galleryOfWondersToken'
 
+const DEFAULT_API_BASE_URL = 'https://gallery-of-wonders.onrender.com/api'
+
+function normalizeApiBaseUrl(baseUrl) {
+  const normalizedBaseUrl = (baseUrl || DEFAULT_API_BASE_URL).trim().replace(/\/+$/, '')
+
+  if (!normalizedBaseUrl) {
+    return DEFAULT_API_BASE_URL
+  }
+
+  return normalizedBaseUrl.endsWith('/api') ? normalizedBaseUrl : `${normalizedBaseUrl}/api`
+}
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+  baseURL: normalizeApiBaseUrl(import.meta.env.VITE_API_BASE_URL),
   headers: {
     'Content-Type': 'application/json',
   },

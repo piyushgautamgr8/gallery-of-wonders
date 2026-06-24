@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
 const connectDB = async () => {
-  const mongoUri = process.env.MONGO_URI;
+  const mongoUri = process.env.MONGODB_URI || process.env.MONGO_URI;
 
   if (!mongoUri) {
-    console.warn("MONGO_URI is missing. Server started without a database connection.");
+    console.warn("MONGODB_URI or MONGO_URI is missing. Server started without a database connection.");
     return null;
   }
 
